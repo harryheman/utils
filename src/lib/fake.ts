@@ -30,7 +30,7 @@ export type Field = {
   fields?: Field[]
 }
 
-export default function faker(len = 1, fields: Field[]) {
+export default function fake(len = 1, fields: Field[]) {
   return range(len - 1).map(() =>
     fields.reduce((obj, field) => {
       const { type, name, value } = field
@@ -38,7 +38,7 @@ export default function faker(len = 1, fields: Field[]) {
       if (!type) {
         obj[name] = value
       } else if (type === TYPE.OBJ) {
-        obj[name] = faker(1, field.fields || [])[0]
+        obj[name] = fake(1, field.fields || [])[0]
       } else {
         const fn = fns[type]
         const args = field.minMax || [field.count]

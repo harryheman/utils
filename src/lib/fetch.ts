@@ -1,4 +1,4 @@
-import { id } from './faker'
+import { id } from './fake'
 import objToQuery from './objToQuery'
 
 const customFetchCache = new Map()
