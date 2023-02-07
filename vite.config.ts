@@ -10,7 +10,7 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/main.ts'),
+      entry: path.resolve(__dirname, 'src/index.ts'),
       name: 'Utils',
       formats: ['es', 'umd'],
       fileName: (format) => `utils.${format}.js`
