@@ -1,0 +1,36 @@
+{
+  "name": "@my-js/utils",
+  "version": "0.0.1",
+  "description": "Gentleman's Set of JavaScript Utilities",
+  "keywords": [
+    "utility",
+    "util",
+    "helper",
+    "function",
+    "fn"
+  ],
+  "license": "MIT",
+  "author": "Igor Agapov <aio350@yahoo.com> (http://my-js.org/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harryheman/utils.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/utils.umd.js",
+  "module": "./dist/utils.es.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/utils.es.js",
+      "require": "./dist/utils.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "prepack": "json -f package.json -I -e \"delete this.devDependencies; delete this.dependencies\""
+  }
+}
