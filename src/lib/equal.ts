@@ -1,4 +1,4 @@
-function shallow<T = object>(objA: T, objB: T): boolean {
+function equal<T = object>(objA: T, objB: T): boolean {
   if (Object.is(objA, objB)) {
     return true
   }
@@ -50,9 +50,7 @@ function shallow<T = object>(objA: T, objB: T): boolean {
     return false
   }
 
-  return keysA.every((key) =>
-    shallow(objA[key as keyof T], objB[key as keyof T])
-  )
+  return keysA.every((key) => equal(objA[key as keyof T], objB[key as keyof T]))
 }
 
-export default shallow
+export default equal

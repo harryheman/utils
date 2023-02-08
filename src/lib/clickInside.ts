@@ -1,6 +1,6 @@
-const clickInside = (element: Element, callback: Function) => {
+const clickInside = (el: Element, cb: Function) => {
   document.addEventListener('click', (e) => {
-    if (element.contains(e.target as Node | null)) callback()
+    if (el.contains(e.target as Node | null)) cb()
   })
 }
 

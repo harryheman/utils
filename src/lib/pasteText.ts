@@ -1,6 +1,6 @@
-const pasteText = async (element: HTMLElement) => {
+const pasteText = async (el: Element) => {
   const text = await navigator.clipboard.readText()
-  element.textContent = text
+  el.textContent = text
 }
 
 export default pasteText

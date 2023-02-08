@@ -1,14 +1,11 @@
 const observeIntersection = (
-  element: Element,
-  callback: Function,
+  el: Element,
+  cb: Function,
   options?: IntersectionObserverInit
 ) => {
-  const observer = new IntersectionObserver(
-    ([entry]) => callback(entry),
-    options
-  )
+  const observer = new IntersectionObserver(([entry]) => cb(entry), options)
 
-  observer.observe(element)
+  observer.observe(el)
 
   return observer
 }

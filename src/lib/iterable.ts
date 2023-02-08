@@ -1,4 +1,4 @@
-const iterable = (obj: object) => {
+const iterable = <T = object>(obj: object) => {
   Object.defineProperties(obj, {
     length: {
       value: Object.keys(obj).length
@@ -13,7 +13,10 @@ const iterable = (obj: object) => {
     }
   })
 
-  return obj
+  return obj as T & {
+    length: number
+    [Symbol.iterator]: () => IterableIterator<T>
+  }
 }
 
 export default iterable

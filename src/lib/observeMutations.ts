@@ -1,15 +1,15 @@
 const observeMutations = (
-  element: Element,
-  callback: Function,
+  el: Element,
+  cb: Function,
   options: MutationObserverInit = {
     childList: true,
     attributes: true,
     subtree: true
   }
 ) => {
-  const observer = new MutationObserver((ms) => ms.forEach((m) => callback(m)))
+  const observer = new MutationObserver((ms) => ms.forEach((m) => cb(m)))
 
-  observer.observe(element, options)
+  observer.observe(el, options)
 
   return observer
 }

@@ -17,7 +17,7 @@ export { default as chunk } from './lib/chunk'
 export { default as shuffle } from './lib/shuffle'
 // object
 export { default as iterable } from './lib/iterable'
-export { default as shallow } from './lib/shallow'
+export { default as equal } from './lib/equal'
 // function
 export { default as curry } from './lib/curry'
 export { default as partial } from './lib/partial'
@@ -52,10 +52,7 @@ export {
   compareValues,
   formatDateTime,
   formatList,
-  formatNames,
-  formatNumber,
-  formatRelativeTime,
-  pluralize
+  formatNumber
 } from './lib/intl'
 export { default as observeIntersection } from './lib/observeIntersection'
 export { default as observeMutations } from './lib/observeMutations'

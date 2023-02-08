@@ -1,76 +1,49 @@
-export const formatDateTime = ({
-  locale = [],
-  date = Date.now(),
-  ...options
-}) => new Intl.DateTimeFormat(locale, options).format(new Date(date))
+const formatDateTime = (date = new Date()) =>
+  new Intl.DateTimeFormat(
+    formatDateTime.locales,
+    formatDateTime.options
+  ).format(new Date(date))
 
-export const formatRelativeTime = ({
-  locale = [],
-  value = '1 day',
-  ...options
-}) => {
-  const [amount, unit] = value.split(/[\s_]/)
-  return new Intl.RelativeTimeFormat(locale, options).format(
-    Number(amount),
-    unit as Intl.RelativeTimeFormatUnit
+formatDateTime.locales = [] as string | string[]
+formatDateTime.options = {} as Intl.DateTimeFormatOptions
+
+const formatNumber = (number = 0) =>
+  new Intl.NumberFormat(formatNumber.locales, formatNumber.options).format(
+    number
   )
-}
 
-export const formatNumber = ({ locale = [], number = 0, ...options }) =>
-  new Intl.NumberFormat(locale, options).format(number)
+formatNumber.locales = [] as string | string[]
+formatNumber.options = {} as Intl.NumberFormatOptions
 
-export const formatNames = ({
-  locale = [],
-  localeOf = 'en-US',
-  type = 'language',
-  ...options
-}) =>
-  new Intl.DisplayNames(locale, {
-    type: type as Intl.DisplayNamesType,
-    ...options
-  }).of(localeOf)
-
-type FormatListProps = {
-  locale: string | string[]
-  list: string | string[]
-  [k: string]: any
-}
-
-export const formatList = ({
-  locale = [],
-  list = [],
-  ...options
-}: FormatListProps) => {
+const formatList = (list: string | string[] = []) => {
   if (typeof list === 'string') {
     list = list
       .replace(/[\[\]]/g, '')
       .split(/[,;]/)
       .map((item) => item.replace(/['"`]/g, '').trim())
   }
-  return new Intl.ListFormat(locale, options).format(list)
+  return new Intl.ListFormat(formatList.locales, formatList.options).format(
+    list
+  )
 }
 
-type CompareValuesProps = {
-  locale: string | string[]
-  values: string | string[]
-  [k: string]: any
-}
+formatList.locales = [] as string | string[]
+formatList.options = {} as Intl.ListFormatOptions
 
-export const compareValues = ({
-  locale = [],
-  values = [],
-  ...options
-}: CompareValuesProps) => {
+const compareValues = (values: string | string[] = []) => {
   if (typeof values === 'string') {
     values = values
       .replace(/[\[\]]/g, '')
       .split(/[,;]/)
       .map((item) => item.replace(/['"`]/g, '').trim())
   }
-  return new Intl.Collator(locale, options).compare(
-    ...(values as [string, string])
-  )
+  return new Intl.Collator(
+    compareValues.locales,
+    compareValues.options
+  ).compare(...(values as [string, string]))
 }
 
-export const pluralize = ({ locale = [], number = 1, ...options }) =>
-  new Intl.PluralRules(locale, options).select(number)
+compareValues.locales = [] as string | string[]
+compareValues.options = {} as Intl.CollatorOptions
+
+export { formatDateTime, formatNumber, formatList, compareValues }
