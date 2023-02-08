@@ -3,7 +3,7 @@ const pipeAsync =
   (...args: any[]) =>
     fns.reduce(
       (prevFn, nextFn) => prevFn.then(nextFn as any),
-      Promise.resolve(args)
+      Promise.resolve(...(args as [any]))
     )
 
 export default pipeAsync

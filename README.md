@@ -2,6 +2,26 @@
 
 Living Gentleman's Set of Useful JavaScript Utilities.
 
+- [Installation](#installation)
+- [Usage](#usage)
+- [List](#list)
+  - [Number](#number)
+  - [String](#string)
+  - [Array](#array)
+  - [Object](#object)
+  - [Function](#function)
+  - [Common](#common)
+  - [Web API](#web-api)
+- [Examples](#examples)
+  - [truncate](#truncate)
+  - [wrap](#wrap)
+  - [chunk](#chunk)
+  - [iterable](#iterable)
+  - [equal](#equal)
+  - [memo](#memo)
+  - [pipeAsync](#pipeasync)
+  - [fake](#fake)
+
 ## Installation
 
 ```bash
@@ -54,7 +74,7 @@ console.log(int) // 6
 ### Object
 
 - `iterable(obj: object)`: makes `obj` iterable; [example](#iterable)
-- `equal<T = object>(objA: T, objB: T)`: deeply compares `objA` and `objB`
+- `equal<T = object>(objA: T, objB: T)`: deeply compares `objA` and `objB`: [example](#equal)
 
 ### Function
 
@@ -62,11 +82,11 @@ console.log(int) // 6
 - `partial(fn: Function, ...args: any[])`
 - `debounce(fn: Function, ms: number)`
 - `throttle(fn: Function, ms: number)`
+- `measure(fn: Function, ...args: any[])`
 - `measureAsync(fn: Function, ...args: any[])`
-- `measureSync(fn: Function, ...args: any[])`
-- `memo(fn: Function, cacheKey?: any)`: by default `args.length ? JSON.stringify(args) : fn.name` used as key for cache
-- `pipeAsync(...fns: Function[])`
-- `pipeSync(...fns: Function[])`
+- `memo(fn: Function, cacheKey?: any)`: by default `args.length ? JSON.stringify(args) : fn.name` used as key for cache; [example](#memo)
+- `pipe(...fns: Function[])`
+- `pipeAsync(...fns: Function[])`: [example](#pipeAsync)
 - `sleep(ms: number)`
 
 ### Common
@@ -74,7 +94,7 @@ console.log(int) // 6
 - `empty(val: any)`
 - `size(val: any)`
 - `type(val: any)`
-- `fake(len = 1, fields: Field[])`: see examples below
+- `fake(len = 1, fields: Field[])`: returns fake data; [example](#fake)
 - `mask(val: string | number, count: number, mask = '*')`
 - `randColor()`: returns random HEX color
 
@@ -88,10 +108,10 @@ console.log(int) // 6
 - `formToQuery(form: HTMLFormElement)`
 - `objToQuery(obj: object)`
 - `queryToObj(str: string)`
-- `customFetch<T>(options: Options): FetchResponse<T>`: see examples below
-- `intl`: set of functions to work with locale sensitive data; see examples below
-- `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`: see examples below
-- `observeMutations(el: Element, cb: Function, options: MutationObserverInit = { childList: true, attributes: true, subtree: true })`: see examples below
+- `customFetch<T>(options: Options): FetchResponse<T>`: advanced version of [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch); [example](#customFetch)
+- `intl`: set of functions to work with locale sensitive data; [example](#intl)
+- `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`: [example](#observeIntersection)
+- `observeMutations(el: Element, cb: Function, options: MutationObserverInit = { childList: true, attributes: true, subtree: true })`: [example](#observeMutations)
 - `visibilityChange(onHidden?: Function, onVisible?: Function)`
 - `worker(fn: Function, ...args: any[])`: executes `fn` in [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 
@@ -100,6 +120,8 @@ console.log(int) // 6
 ### truncate
 
 ```ts
+import { truncate } from '@my-js/utils'
+
 const str = 'JavaScript'
 const truncated = truncate(str, 4)
 console.log(truncated) // Java...
@@ -111,6 +133,8 @@ console.log(truncated2) // Java?
 ### wrap
 
 ```ts
+import { wrap } from '@my-js/utils'
+
 const str =
   'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est, veniam?'
 const wrapped = wrap(str, 30)
@@ -125,6 +149,8 @@ console.log(wrapped)
 ### chunk
 
 ```ts
+import { chunk } from '@my-js/utils'
+
 const arr = [1, 2, 3, 4, 5]
 const chunked = chunk(arr, 2)
 console.log(chunked)
@@ -140,6 +166,8 @@ console.log(chunked)
 ### iterable
 
 ```ts
+import { iterable } from '@my-js/utils'
+
 const user = {
   name: 'Harry',
   age: 32
@@ -152,6 +180,182 @@ for (const v of iter) {
 /*
   Harry
   32
+*/
+```
+
+### equal
+
+```ts
+import { equal } from '@my-js/utils'
+
+const objA = {
+  name: 'Harry',
+  job: {
+    position: 'Chief Engineer'
+  }
+}
+const objB = {
+  name: 'Harry',
+  job: {
+    position: 'Chief Engineer'
+  }
+}
+console.log(equal(objA, objB)) // true
+
+// or new Set()
+const mapA = new Map()
+mapA.set('name', 'Harry')
+const job = { position: 'Chief Engineer' }
+mapA.set('job', job)
+
+const mapB = new Map()
+mapB.set('name', 'Harry')
+mapB.set('job', job)
+console.log(equal(mapA, mapB)) // true
+
+const mapC = new Map()
+mapB.set('name', 'Harry')
+mapB.set('job', { position: 'Chief Engineer' })
+console.log(equal(mapB, mapC)) // false
+
+const objC = {
+  0: 'Harry',
+  1: 32
+}
+// just for demonstration purposes
+const arr = ['Harry', 32] as unknown as typeof objC
+console.log(equal(objC, arr)) // false
+
+// can be used in `React.useEffect` or `React.memo`
+```
+
+### memo
+
+```ts
+import { memo, measure } from '@my-js/utils'
+
+const fact = (n: number): number => (n < 2 ? n : n * fact(n - 1))
+const memoFact = memo(fact)
+// result calculates
+console.log(measure(memoFact, 10000).toFixed(2)) // 0.30
+// result delivers from cache
+console.log(measure(memoFact, 10000).toFixed(2)) // 0
+```
+
+### pipeAsync
+
+```ts
+const sayHiAndSleep = async (name: string) => {
+  console.log(`Hi, ${name}!`)
+  await sleep(1000)
+  return name.toUpperCase()
+}
+const askQuestionAndSleep = async (name: string) => {
+  console.log(`How are you, ${name}?`)
+  await sleep(1000)
+  return new TextEncoder()
+    .encode(name) // Uint8Array
+    .toString()
+    .replaceAll(',', '-')
+}
+const sayBi = async (name: string) => {
+  console.log(`Bye, ${name}.`)
+}
+
+const speak = pipeAsync(sayHiAndSleep, askQuestionAndSleep, sayBi)
+speak('Harry')
+/*
+  Hi, Harry!
+  // waiting 1s
+  How are you, HARRY?
+  // waiting 1s
+  Bye, 72-65-82-82-89.
+*/
+```
+
+### fake
+
+```ts
+import { fake, randInt, range, TYPE, words } from '@my-js/utils'
+
+const fields = [
+  { name: 'id', type: TYPE.ID },
+  { name: 'firstName', type: TYPE.STR, count: 2 },
+  { name: 'lastName', type: TYPE.STR, count: 2 },
+  { name: 'age', type: TYPE.NUM, minMax: [18, 65] },
+  { name: 'isMarried', type: TYPE.BOOL },
+  {
+    name: 'company',
+    type: TYPE.OBJ,
+    fields: [
+      {
+        name: 'name',
+        type: TYPE.STR,
+        count: 3
+      },
+      {
+        name: 'position',
+        type: TYPE.STR,
+        count: 2
+      }
+    ]
+  },
+  { name: 'scores', value: range(5).map(() => randInt(1, 10)) },
+  { name: 'movies', value: range(5).map(() => words(randInt(1, 3))) },
+  {
+    name: 'friends',
+    value: fake(2, [
+      { name: 'id', type: TYPE.ID },
+      { name: 'firstName', type: TYPE.STR, count: 2 },
+      { name: 'lastName', type: TYPE.STR, count: 2 }
+    ])
+  }
+]
+
+const data = fake(1, fields)
+console.log(JSON.stringify(data, null, 2))
+/*
+  [
+    {
+      "id": "U0IXsmCb53",
+      "firstName": "Awhsjqjii Zdtrs Lrysnjn",
+      "lastName": "Aoroagbph Ivculxy Qlpy",
+      "age": 61,
+      "isMarried": false,
+      "company": {
+        "name": "Pixpjrlnyu Grhdyr Ko Ccdditq",
+        "position": "Tg Fy Yiuossmpj"
+      },
+      "scores": [
+        2,
+        1,
+        1,
+        6,
+        9,
+        3
+      ],
+      "movies": [
+        "Kta Ehhohrbfzn",
+        "Ywjurtgubo Tltnkhlq",
+        "Hfugktfhb Kmbo",
+        "Ljej Ntzxz",
+        "Hlotahsqf Uvmg Jblmeqk Pkdo",
+        "Qfndmtxwxs Xzmifhkb"
+      ],
+      "friends": [
+        {
+          "id": "oJL44Q5CiW",
+          "firstName": "Rtm Jtvuarzmzy Udpxnouwzk",
+          "lastName": "Mgvyssuf Cbirag Qaf"
+        },
+        {
+          "id": "1WUPCfEZtg",
+          "firstName": "Yjurpywahy Ckqz Hzebgfjp",
+          "lastName": "Tkxjfi Pnhx Pftfix"
+        }
+      ]
+    }
+  ]
 */
 ```
 
