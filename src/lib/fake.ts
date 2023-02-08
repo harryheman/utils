@@ -31,7 +31,7 @@ export type Field = {
 }
 
 export default function fake(len = 1, fields: Field[]) {
-  return range(len - 1).map(() =>
+  return range(len, 1).map(() =>
     fields.reduce((obj, field) => {
       const { type, name, value } = field
 

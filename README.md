@@ -19,8 +19,11 @@ Living Gentleman's Set of Useful JavaScript Utilities.
   - [iterable](#iterable)
   - [equal](#equal)
   - [memo](#memo)
+  - [memoAsync](#memoasync)
+  - [pipe](#pipe)
   - [pipeAsync](#pipeasync)
   - [fake](#fake)
+  - [customFetch](#customfetch)
 
 ## Installation
 
@@ -85,7 +88,8 @@ console.log(int) // 6
 - `measure(fn: Function, ...args: any[])`
 - `measureAsync(fn: Function, ...args: any[])`
 - `memo(fn: Function, cacheKey?: any)`: by default `args.length ? JSON.stringify(args) : fn.name` used as key for cache; [example](#memo)
-- `pipe(...fns: Function[])`
+- `memoAsync(fn: Function, cacheKey?: any)`: [example](#memoAsync)
+- `pipe(...fns: Function[])`: [example](#pipe)
 - `pipeAsync(...fns: Function[])`: [example](#pipeAsync)
 - `sleep(ms: number)`
 
@@ -214,8 +218,8 @@ mapB.set('job', job)
 console.log(equal(mapA, mapB)) // true
 
 const mapC = new Map()
-mapB.set('name', 'Harry')
-mapB.set('job', { position: 'Chief Engineer' })
+mapC.set('name', 'Harry')
+mapC.set('job', { position: 'Chief Engineer' })
 console.log(equal(mapB, mapC)) // false
 
 const objC = {
@@ -240,6 +244,32 @@ const memoFact = memo(fact)
 console.log(measure(memoFact, 10000).toFixed(2)) // 0.30
 // result delivers from cache
 console.log(measure(memoFact, 10000).toFixed(2)) // 0
+```
+
+### memoAsync
+
+```ts
+import { measureAsync, memoAsync } from '@my-js/utils'
+
+const fetchUserById = memoAsync((id: number) =>
+  fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+)
+
+console.log(Math.round(await measureAsync(fetchUserById, 1))) // 60
+console.log(Math.round(await measureAsync(fetchUserById, 1))) // 0
+```
+
+### pipe
+
+```ts
+import { pipe } from '@my-js/utils'
+
+const toUpperCase = (str) => str.toUpperCase()
+const removeSpaces = (str) => str.replace(/\s/g, '')
+const addExclamation = (str) => str + '!'
+
+const format = pipe(toUpperCase, removeSpaces, addExclamation)
+console.log(format('hello world')) // HELLOWORLD!
 ```
 
 ### pipeAsync
@@ -280,8 +310,8 @@ import { fake, randInt, range, TYPE, words } from '@my-js/utils'
 
 const fields = [
   { name: 'id', type: TYPE.ID },
-  { name: 'firstName', type: TYPE.STR, count: 2 },
-  { name: 'lastName', type: TYPE.STR, count: 2 },
+  { name: 'firstName', type: TYPE.STR, count: 1 },
+  { name: 'lastName', type: TYPE.STR, count: 1 },
   { name: 'age', type: TYPE.NUM, minMax: [18, 65] },
   { name: 'isMarried', type: TYPE.BOOL },
   {
@@ -300,14 +330,14 @@ const fields = [
       }
     ]
   },
-  { name: 'scores', value: range(5).map(() => randInt(1, 10)) },
-  { name: 'movies', value: range(5).map(() => words(randInt(1, 3))) },
+  { name: 'scores', value: range(4).map(() => randInt(1, 10)) },
+  { name: 'movies', value: range(4).map(() => words(randInt(1, 3))) },
   {
     name: 'friends',
     value: fake(2, [
       { name: 'id', type: TYPE.ID },
-      { name: 'firstName', type: TYPE.STR, count: 2 },
-      { name: 'lastName', type: TYPE.STR, count: 2 }
+      { name: 'firstName', type: TYPE.STR, count: 1 },
+      { name: 'lastName', type: TYPE.STR, count: 1 }
     ])
   }
 ]
@@ -317,41 +347,39 @@ console.log(JSON.stringify(data, null, 2))
 /*
   [
     {
-      "id": "U0IXsmCb53",
-      "firstName": "Awhsjqjii Zdtrs Lrysnjn",
-      "lastName": "Aoroagbph Ivculxy Qlpy",
-      "age": 61,
-      "isMarried": false,
+      "id": "2Ab0pPVLSz",
+      "firstName": "Ue",
+      "lastName": "Kkma",
+      "age": 28,
+      "isMarried": true,
       "company": {
-        "name": "Pixpjrlnyu Grhdyr Ko Ccdditq",
-        "position": "Tg Fy Yiuossmpj"
+        "name": "Mir Ptlkxgao Kbjwkhjvqm",
+        "position": "Fsvrqjuc Vfwazzuzh"
       },
       "scores": [
+        10,
         2,
-        1,
-        1,
-        6,
-        9,
-        3
+        4,
+        8,
+        9
       ],
       "movies": [
-        "Kta Ehhohrbfzn",
-        "Ywjurtgubo Tltnkhlq",
-        "Hfugktfhb Kmbo",
-        "Ljej Ntzxz",
-        "Hlotahsqf Uvmg Jblmeqk Pkdo",
-        "Qfndmtxwxs Xzmifhkb"
+        "Jsyyni Lwklngq",
+        "Lplkxi",
+        "Osfr",
+        "Bwdykwzqqn",
+        "Ltga"
       ],
       "friends": [
         {
-          "id": "oJL44Q5CiW",
-          "firstName": "Rtm Jtvuarzmzy Udpxnouwzk",
-          "lastName": "Mgvyssuf Cbirag Qaf"
+          "id": "0mR8GuIemf",
+          "firstName": "Efg",
+          "lastName": "Ewoqnyysk"
         },
         {
-          "id": "1WUPCfEZtg",
-          "firstName": "Yjurpywahy Ckqz Hzebgfjp",
-          "lastName": "Tkxjfi Pnhx Pftfix"
+          "id": "nDrS988WP8",
+          "firstName": "Xgdorx",
+          "lastName": "Qqryc"
         }
       ]
     }
@@ -359,4 +387,4 @@ console.log(JSON.stringify(data, null, 2))
 */
 ```
 
-> wip
+### customFetch
