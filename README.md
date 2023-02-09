@@ -24,6 +24,7 @@ Living Gentleman's Set of Useful JavaScript Utilities.
   - [pipeAsync](#pipeasync)
   - [fake](#fake)
   - [customFetch](#customfetch)
+  - [intl](#intl)
 
 ## Installation
 
