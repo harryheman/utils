@@ -8,7 +8,11 @@ export const capitilize = (word: string) =>
 const words = (count = 3, minMax = [2, 10] as [number, number], cap = true) =>
   range(count, 1)
     .map(() => randStr(randInt(...minMax), LOWER))
-    .map((w) => (cap ? capitilize(w) : w))
+    .map((w) => {
+      console.log(w)
+
+      return cap ? capitilize(w) : w
+    })
     .join(' ')
 
 export default words

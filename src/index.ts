@@ -49,12 +49,8 @@ export { default as objToQuery } from './lib/objToQuery'
 export { default as queryToObj } from './lib/queryToObj'
 export { default as customFetch } from './lib/fetch'
 export type { Options, FetchResponse, Fetch } from './lib/fetch'
-export {
-  compareValues,
-  formatDateTime,
-  formatList,
-  formatNumber
-} from './lib/intl'
+export { default as intl } from './lib/intl'
+export type { IntlT } from './lib/intl'
 export { default as observeIntersection } from './lib/observeIntersection'
 export { default as observeMutations } from './lib/observeMutations'
 export { default as visibilityChange } from './lib/visibilityChange'

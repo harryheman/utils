@@ -1,49 +1,47 @@
-const formatDateTime = (date = new Date()) =>
-  new Intl.DateTimeFormat(
-    formatDateTime.locales,
-    formatDateTime.options
-  ).format(new Date(date))
-
-formatDateTime.locales = [] as string | string[]
-formatDateTime.options = {} as Intl.DateTimeFormatOptions
-
-const formatNumber = (number = 0) =>
-  new Intl.NumberFormat(formatNumber.locales, formatNumber.options).format(
-    number
-  )
-
-formatNumber.locales = [] as string | string[]
-formatNumber.options = {} as Intl.NumberFormatOptions
-
-const formatList = (list: string | string[] = []) => {
-  if (typeof list === 'string') {
-    list = list
-      .replace(/[\[\]]/g, '')
-      .split(/[,;]/)
-      .map((item) => item.replace(/['"`]/g, '').trim())
-  }
-  return new Intl.ListFormat(formatList.locales, formatList.options).format(
-    list
-  )
+export type IntlT = {
+  locales: string | string[]
+  dateOptions: Intl.DateTimeFormatOptions
+  numberOptions: Intl.NumberFormatOptions
+  listOptions: Intl.ListFormatOptions
+  compareOptions: Intl.CollatorOptions
+  formatDate: (date?: number | Date) => string
+  formatNumber: (num?: number | bigint) => string
+  formatList: (list?: Iterable<string>) => string
+  compareValues: (values?: string | string[]) => number
 }
 
-formatList.locales = [] as string | string[]
-formatList.options = {} as Intl.ListFormatOptions
-
-const compareValues = (values: string | string[] = []) => {
-  if (typeof values === 'string') {
-    values = values
-      .replace(/[\[\]]/g, '')
-      .split(/[,;]/)
-      .map((item) => item.replace(/['"`]/g, '').trim())
+const intl: IntlT = {
+  locales: [],
+  dateOptions: {},
+  numberOptions: {},
+  listOptions: {},
+  compareOptions: {},
+  formatDate: (date = new Date()) =>
+    new Intl.DateTimeFormat(intl.locales, intl.dateOptions).format(
+      new Date(date)
+    ),
+  formatNumber: (number = 0) =>
+    new Intl.NumberFormat(intl.locales, intl.numberOptions).format(number),
+  formatList: (list = []) => {
+    if (typeof list === 'string') {
+      list = list
+        .replace(/[\[\]]/g, '')
+        .split(/[,;]/)
+        .map((item) => item.replace(/['"`]/g, '').trim())
+    }
+    return new Intl.ListFormat(intl.locales, intl.listOptions).format(list)
+  },
+  compareValues: (values: string | string[] = []) => {
+    if (typeof values === 'string') {
+      values = values
+        .replace(/[\[\]]/g, '')
+        .split(/[,;]/)
+        .map((item) => item.replace(/['"`]/g, '').trim())
+    }
+    return new Intl.Collator(intl.locales, intl.compareOptions).compare(
+      ...(values as [string, string])
+    )
   }
-  return new Intl.Collator(
-    compareValues.locales,
-    compareValues.options
-  ).compare(...(values as [string, string]))
 }
 
-compareValues.locales = [] as string | string[]
-compareValues.options = {} as Intl.CollatorOptions
-
-export { formatDateTime, formatNumber, formatList, compareValues }
+export default intl

@@ -114,8 +114,8 @@ console.log(int) // 6
 - `queryToObj(str: string)`
 - `customFetch<T>(options: Options): FetchResponse<T>`: advanced version of [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch); [example](#customFetch)
 - `intl`: set of functions to work with locale sensitive data; [example](#intl)
-- `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`: [example](#observeIntersection)
-- `observeMutations(el: Element, cb: Function, options: MutationObserverInit = { childList: true, attributes: true, subtree: true })`: [example](#observeMutations)
+- `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`
+- `observeMutations(el: Element, cb: Function, options: MutationObserverInit = { childList: true, attributes: true, subtree: true })`
 - `visibilityChange(onHidden?: Function, onVisible?: Function)`
 - `worker(fn: Function, ...args: any[])`: executes `fn` in [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 
@@ -347,39 +347,39 @@ console.log(JSON.stringify(data, null, 2))
 /*
   [
     {
-      "id": "2Ab0pPVLSz",
-      "firstName": "Ue",
-      "lastName": "Kkma",
-      "age": 28,
-      "isMarried": true,
+      "id": "ZvO3fE25Kq",
+      "firstName": "Kwvan",
+      "lastName": "Iaiazwlu",
+      "age": 52,
+      "isMarried": false,
       "company": {
-        "name": "Mir Ptlkxgao Kbjwkhjvqm",
-        "position": "Fsvrqjuc Vfwazzuzh"
+        "name": "Kvh Iebz Tceysx",
+        "position": "Wejg Ugkswkztsf"
       },
       "scores": [
         10,
-        2,
-        4,
-        8,
-        9
+        10,
+        9,
+        9,
+        6
       ],
       "movies": [
-        "Jsyyni Lwklngq",
-        "Lplkxi",
-        "Osfr",
-        "Bwdykwzqqn",
-        "Ltga"
+        "Vlcpmtjqo",
+        "Yldzevozge Wocr Pxgwdhwtf",
+        "Avch Obtgwk",
+        "Mpqld Gpnsmxe",
+        "Xrpsqaqzb Sgloho"
       ],
       "friends": [
         {
-          "id": "0mR8GuIemf",
-          "firstName": "Efg",
-          "lastName": "Ewoqnyysk"
+          "id": "4RHtu6RyBH",
+          "firstName": "Ticnf",
+          "lastName": "Chk"
         },
         {
-          "id": "nDrS988WP8",
-          "firstName": "Xgdorx",
-          "lastName": "Qqryc"
+          "id": "8o9QwrgPXs",
+          "firstName": "Ocjo",
+          "lastName": "Jbjtl"
         }
       ]
     }
@@ -388,3 +388,135 @@ console.log(JSON.stringify(data, null, 2))
 ```
 
 ### customFetch
+
+```ts
+import { customFetch } from '@my-js/utils'
+
+// receives options object
+const response = await customFetch({
+  url: 'https://jsonplaceholder.typicode.com/todos/1',
+
+/*
+  // optional
+  // results caching, `false` by default
+  customCache: true,
+
+  // logging, `false` by default
+  log: true,
+
+  // query params, converts to query string - `q=search`, `undefined` by default
+  params: { q: 'search' },
+
+  handlers: {
+    onSuccess: (data) => {},
+    onError: (error) => {},
+    onAbort: () => {}
+  }
+*/
+})
+console.log(response)
+/*
+{
+  "data": {
+    "userId": 1,
+    "id": 1,
+    "title": "delectus aut autem",
+    "completed": false
+  },
+  "error": null,
+  "info": {
+    "headers": {
+        "cache-control": "max-age=43200",
+        "content-type": "application/json; charset=utf-8",
+        "expires": "-1",
+        "pragma": "no-cache"
+    },
+    "status": 200,
+    "statusText": "",
+    "url": "https://jsonplaceholder.typicode.com/todos/1"
+  }
+}
+*/
+
+// wrong URL
+const response2 = await customFetch.get(
+  'https://jsonplaceholder.typicod.com/todos/1'
+  /* options */
+)
+console.log(response2)
+/*
+{
+    "data": null,
+    "error": Error,
+    "info": null
+}
+*/
+
+// let's suppose, that server responds with `res.status(400).json({ message: 'Some required fields is missing' })`
+const response3 = await customFetch.get('https://my-js.org')
+console.log(response3)
+/*
+{
+    "data": null,
+    "error": { "message": "Some required fields is missing" },
+    "info": {
+      "status": 400
+      // ...
+    }
+}
+*/
+
+// other method aliases
+customFetch.post<T>(url: string | BodyInit, body?: BodyInit | Omit<Options, 'url'>, options?: Omit<Options, 'url'>)
+customFetch.update<T>(url: string | BodyInit, body?: BodyInit | Omit<Options, 'url'>, options?: Omit<Options, 'url'>)
+customFetch.remove<T>(url: string | BodyInit,options?: Omit<Options, 'url'>)
+
+// we can also provide
+customFetch.baseUrl = 'https://my-js.org/docs/'
+customFetch.get('/guide/nextjs')
+// final URL will be `https://my-js.org/docs/guide/nextjs`
+
+// and
+customFetch.accessToken = 'T0k3n'
+// will be add to headers - `Authorization: Bearer T0k3n`
+
+// every request can be cancelled
+customFetch.cancel(customFetch.currentRequestId)
+```
+
+### intl
+
+```ts
+import { intl } from './index'
+
+intl.locales = 'de'
+console.log(intl.formatDate(new Date())) // 9.2.2023
+
+intl.locales = 'en-US'
+intl.dateOptions = {
+  dateStyle: 'long',
+  timeStyle: 'medium'
+}
+console.log(intl.formatDate(new Date())) // February 9, 2023 at 10:35:20 PM
+
+intl.numberOptions = {
+  style: 'currency',
+  currency: 'EUR'
+}
+
+const formatCurrency = intl.formatNumber
+console.log(formatCurrency(100)) // €100.00
+
+intl.locales = 'fr'
+console.log(formatCurrency(100)) // 100,00 €
+
+// other options
+intl.listOptions: Intl.ListFormatOptions
+intl.compareOptions: Intl.CollatorOptions
+
+// other methods
+intl.formatList(list?: Iterable<string>)
+intl.compareValues(values?: string | string[])
+```
+
+PRs are very welcome.
