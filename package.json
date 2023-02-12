@@ -1,13 +1,12 @@
 {
   "name": "@my-js/utils",
-  "version": "0.0.7",
-  "description": "Gentleman's Set of JavaScript Utilities",
+  "version": "0.0.8",
+  "description": "Living Gentleman's Set of Useful JavaScript Utilities.",
   "keywords": [
     "utility",
     "util",
     "helper",
-    "function",
-    "fn"
+    "function"
   ],
   "license": "MIT",
   "author": "Igor Agapov <aio350@yahoo.com> (http://my-js.org/)",

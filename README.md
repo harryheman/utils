@@ -207,7 +207,7 @@ const objB = {
 }
 console.log(equal(objA, objB)) // true
 
-// or new Set()
+// or `new Set()`
 const mapA = new Map()
 mapA.set('name', 'Harry')
 const job = { position: 'Chief Engineer' }
@@ -297,9 +297,9 @@ const speak = pipeAsync(sayHiAndSleep, askQuestionAndSleep, sayBi)
 speak('Harry')
 /*
   Hi, Harry!
-  // waiting 1s
+  // waiting for 1s
   How are you, HARRY?
-  // waiting 1s
+  // waiting for 1s
   Bye, 72-65-82-82-89.
 */
 ```
@@ -393,7 +393,7 @@ console.log(JSON.stringify(data, null, 2))
 ```ts
 import { customFetch } from '@my-js/utils'
 
-// receives options object
+// receives `options` object
 const response = await customFetch({
   url: 'https://jsonplaceholder.typicode.com/todos/1',
 
@@ -453,13 +453,16 @@ console.log(response2)
 }
 */
 
-// let's suppose, that server responds with `res.status(400).json({ message: 'Some required fields is missing' })`
+// let's suppose, that our server responds with
+// `res.status(400).json({ message: 'Some required fields is missing' })`
 const response3 = await customFetch.get('https://my-js.org')
 console.log(response3)
 /*
 {
     "data": null,
-    "error": { "message": "Some required fields is missing" },
+    "error": {
+      "message": "Some required fields is missing"
+    },
     "info": {
       "status": 400
       // ...
@@ -479,7 +482,7 @@ customFetch.get('/guide/nextjs')
 
 // and
 customFetch.accessToken = 'T0k3n'
-// will be add to headers - `Authorization: Bearer T0k3n`
+// 'T0k3n' will be added to `headers` object - `Authorization: Bearer T0k3n`
 
 // every request can be cancelled
 customFetch.cancel(customFetch.currentRequestId)
@@ -498,7 +501,8 @@ intl.dateOptions = {
   dateStyle: 'long',
   timeStyle: 'medium'
 }
-console.log(intl.formatDate(new Date())) // February 9, 2023 at 10:35:20 PM
+console.log(intl.formatDate(new Date()))
+// February 9, 2023 at 10:35:20 PM
 
 intl.numberOptions = {
   style: 'currency',
