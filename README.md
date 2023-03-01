@@ -50,7 +50,7 @@ console.log(int) // 6
 
 - `randInt(min: number, max: number)`
 - `sortNum(arr: number[], asc = true)`
-- `range(stop: number, start = 0, step = 1): [start, step, step, ...stop]`
+- `range(stop: number, start = 0, step = 1): [start, step, ...stop)`
 
 ### String
 
@@ -72,7 +72,7 @@ console.log(int) // 6
 ### Array
 
 - `choice<T = any>(arr: T[]): random T`
-- `chunk<T = any>(arr: T[], count: number): T[] | T[][]`: [example](#chunk)
+- `chunk<T = any>(arr: T[], size: number): T[] | T[][]`: [example](#chunk)
 - `shuffle<T = any>(arr: T[])`
 
 ### Object
@@ -331,8 +331,8 @@ const fields = [
       }
     ]
   },
-  { name: 'scores', value: range(4).map(() => randInt(1, 10)) },
-  { name: 'movies', value: range(4).map(() => words(randInt(1, 3))) },
+  { name: 'scores', value: range(5).map(() => randInt(1, 10)) },
+  { name: 'movies', value: range(5).map(() => words(randInt(1, 3))) },
   {
     name: 'friends',
     value: fake(2, [
