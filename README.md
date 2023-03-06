@@ -1,6 +1,6 @@
 # Utils
 
-Living Gentleman's Set of Useful JavaScript Utilities.
+Useful JavaScript Utilities.
 
 - [Installation](#installation)
 - [Usage](#usage)
