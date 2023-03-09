@@ -1,4 +1,4 @@
-const chunk = <T = any>(arr: T[], size: number) => {
+const chunk = <T>(arr: T[], size: number) => {
   if (arr.length < size) return arr
   const _arr = []
   for (let i = 0; i < arr.length; i += size) {

@@ -1,7 +1,7 @@
 {
   "name": "@my-js/utils",
-  "version": "0.0.11",
-  "description": "Living Gentleman's Set of Useful JavaScript Utilities.",
+  "version": "0.0.12",
+  "description": "Useful JavaScript Utilities.",
   "keywords": [
     "utility",
     "util",

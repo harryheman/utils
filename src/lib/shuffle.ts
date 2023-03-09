@@ -1,4 +1,4 @@
-const shuffle = <T = any>(arr: T[]) => {
+const shuffle = <T>(arr: T[]) => {
   let l = arr.length
   while (l) {
     const i = Math.floor(Math.random() * l--)

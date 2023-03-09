@@ -1,7 +1,7 @@
-const iterable = <T = object>(obj: object) => {
+const iterable = <T extends object>(obj: T) => {
   Object.defineProperties(obj, {
     length: {
-      value: Object.keys(obj).length
+      value: Object.keys(obj).length,
     },
 
     [Symbol.iterator]: {
@@ -9,8 +9,8 @@ const iterable = <T = object>(obj: object) => {
         for (const i in this) {
           yield this[i]
         }
-      }
-    }
+      },
+    },
   })
 
   return obj as T & {

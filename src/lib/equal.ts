@@ -1,4 +1,4 @@
-function equal<T = object>(objA: T, objB: T): boolean {
+function equal<T>(objA: T, objB: T): boolean {
   if (Object.is(objA, objB)) {
     return true
   }
