@@ -71,14 +71,14 @@ console.log(int) // 6
 
 ### Array
 
-- `choice<T = any>(arr: T[]): random T`
-- `chunk<T = any>(arr: T[], size: number): T[] | T[][]`: [example](#chunk)
-- `shuffle<T = any>(arr: T[])`
+- `choice<T>(arr: T[]): random T`
+- `chunk<T>(arr: T[], size: number): T[] | T[][]`: [example](#chunk)
+- `shuffle<T>(arr: T[])`
 
 ### Object
 
-- `iterable(obj: object)`: makes `obj` iterable; [example](#iterable)
-- `equal<T = object>(objA: T, objB: T)`: deeply compares `objA` and `objB`: [example](#equal)
+- `iterable<T extends object>(obj: T)`: makes `obj` iterable; [example](#iterable)
+- `equal<T>(objA: T, objB: T)`: deeply compares `objA` and `objB`: [example](#equal)
 
 ### Function
 
@@ -109,10 +109,14 @@ console.log(int) // 6
 - `clickOutside(el: Element, cb: Function)`
 - `copyText(str: string): Promise<void>`: copies text to clipboard
 - `pasteText(el: Element): Promise<void>`: pastes text from clipboard to `el.textContent`
-- `formToObj(form: HTMLFormElement)`
-- `formToQuery(form: HTMLFormElement)`
-- `objToQuery(obj: object)`
-- `queryToObj(str: string)`
+- `formToObj<T>(form: HTMLFormElement): T`
+- `formToQuery(form: HTMLFormElement): string`
+- `objToQuery<T extends {}>(obj: T): string`
+- `queryToObj<T>(q: string): T`
+- `cookieToObj<T>(str: string): T`: JSDoc example available
+- `objToCookie<T extends {}>(obj: T): string`: JSDoc example available
+- `uuid(): string`: JSDoc example available
+- `hash(str: string): Promise<string>`: JSDoc example available
 - `customFetch<T>(options: Options): FetchResponse<T>`: advanced version of [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch); [example](#customFetch)
 - `intl`: set of functions to work with locale sensitive data; [example](#intl)
 - `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`
