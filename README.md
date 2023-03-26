@@ -122,7 +122,7 @@ console.log(int) // 6
 - `observeIntersection(el: Element, cb: Function, options?: IntersectionObserverInit)`
 - `observeMutations(el: Element, cb: Function, options: MutationObserverInit = { childList: true, attributes: true, subtree: true })`
 - `visibilityChange(onHidden?: Function, onVisible?: Function)`
-- `worker(fn: Function, ...args: any[])`: executes `fn` in [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+- `worker(fn: Function)`: executes `fn` in [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 
 ## Examples
 
