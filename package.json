@@ -1,6 +1,6 @@
 {
   "name": "@my-js/utils",
-  "version": "0.0.14",
+  "version": "0.0.16",
   "description": "Useful JavaScript Utilities.",
   "keywords": [
     "utility",
@@ -19,11 +19,11 @@
   ],
   "main": "./dist/utils.umd.js",
   "module": "./dist/utils.es.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/utils.es.js",
-      "require": "./dist/utils.umd.js"
+      "require": "./dist/utils.umd.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {

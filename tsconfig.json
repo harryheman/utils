@@ -8,7 +8,7 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "moduleResolution": "Node",
+    "moduleResolution": "Node16",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
